@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">BeeRace</string>
+    <string name="_1st">1st</string>
+    <string name="_2nd">2nd</string>
+    <string name="_3rd">3rd</string>
+    <string name="th">%1$sth</string>
+    <string name="start_bee_race">Start Bee Race</string>
+    <string name="winner">Winner</string>
+    <string name="re_start_bee_race">re-Start Bee Race</string>
+    <string name="retry">Retry</string>
+    <string name="time_remaining">Time remaining</string>
 </resources>
