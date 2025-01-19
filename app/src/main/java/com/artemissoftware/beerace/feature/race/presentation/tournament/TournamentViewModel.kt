@@ -5,8 +5,8 @@ import com.artemissoftware.beerace.core.domain.error.DataError
 import com.artemissoftware.beerace.feature.race.domain.models.RaceDuration
 import com.artemissoftware.beerace.feature.race.domain.repository.RaceRepository
 import com.artemissoftware.beerace.feature.race.presentation.tournament.model.RaceStatus
-import com.artemissoftware.beerace.presentation.composables.events.UiEvent
-import com.artemissoftware.beerace.presentation.composables.events.UiEventViewModel
+import com.artemissoftware.beerace.core.presentation.util.events.UiEvent
+import com.artemissoftware.beerace.core.presentation.util.events.UiEventViewModel
 import com.artemissoftware.beerace.presentation.navigation.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
