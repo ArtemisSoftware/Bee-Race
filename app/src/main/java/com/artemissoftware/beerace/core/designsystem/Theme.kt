@@ -1,6 +1,5 @@
-package com.artemissoftware.beerace.ui.theme
+package com.artemissoftware.beerace.core.designsystem
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,7 +8,10 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
+import com.artemissoftware.beerace.core.designsystem.composables.localShape
+import com.artemissoftware.beerace.core.designsystem.composables.shape
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -49,10 +51,20 @@ fun BeeRaceTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+    CompositionLocalProvider(
+//        localWindow provides if(isLandScape) landScape else portrait,
+        localSpacing provides spacing,
+        localDimension provides dimensionPortrait,
+        localShape provides shape,
+//        localPalette provides if (darkTheme) paletteDark else paletteLight,
+//        localFixedPalette provides fixedPalette,
+//        localPokemonPalette provides pokemonPalette,
+    ) {
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = Typography,
+            content = content
+        )
+    }
 }
