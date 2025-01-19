@@ -4,6 +4,7 @@ import com.artemissoftware.beerace.feature.race.data.network.BeeceptorApi
 import com.artemissoftware.beerace.feature.race.data.network.dto.DurationDto
 import com.artemissoftware.beerace.feature.race.data.network.dto.RaceStatusDto
 import com.artemissoftware.beerace.testdata.DtoTestData
+import com.artemissoftware.beerace.testdata.DtoTestData.raceStatusDto
 
 class FakeBeeceptorApi : BeeceptorApi {
 
@@ -16,8 +17,6 @@ class FakeBeeceptorApi : BeeceptorApi {
 
     override suspend fun getRaceStatus(): RaceStatusDto {
         if (shouldThrowError) throw Exception("Network error while fetching race status")
-        return RaceStatusDto(
-            bees = DtoTestData.beesDto
-        )
+        return raceStatusDto
     }
 }
