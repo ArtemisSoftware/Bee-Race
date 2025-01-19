@@ -34,7 +34,7 @@ fun NavGraphBuilder.raceNavGraph(
                 navController.navigate(it)
             },
             navigateToError = { message ->
-                navController.navigate(Route.Error(message/*, callback = { navController.navigate(RaceRoute.Tournament) }*/))
+                navController.navigate(Route.Error(message))
             }
         )
     }
