@@ -10,11 +10,13 @@ import kotlinx.coroutines.flow.collectLatest
 fun ManageUIEvents(
     uiEvent: Flow<UiEvent>,
     onNavigate: (UiEvent.Navigate) -> Unit = {},
+    onNavigateWithRoute: (UiEvent.NavigateWithRoute) -> Unit = {},
 ) {
     LaunchedEffect(key1 = Unit) {
         uiEvent.collectLatest { event ->
             when (event) {
                 is UiEvent.Navigate -> { onNavigate(event) }
+                is UiEvent.NavigateWithRoute -> { onNavigateWithRoute(event) }
             }
         }
     }
