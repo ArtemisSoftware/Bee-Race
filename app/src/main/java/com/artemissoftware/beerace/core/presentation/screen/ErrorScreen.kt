@@ -1,5 +1,6 @@
 package com.artemissoftware.beerace.core.presentation.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,10 @@ fun ErrorScreen(
     errorMessage: String,
     onRetry: () -> Unit
 ) {
+    BackHandler {
+
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

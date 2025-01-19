@@ -35,6 +35,7 @@ class TournamentViewModel @Inject constructor(
     fun onTriggerEvent(event: TournamentEvent){
         when(event){
             TournamentEvent.ResumeRace -> resumeCountdown()
+            TournamentEvent.CancelRace -> cancelCountdown(RaceStatus.INTERRUPTED)
         }
     }
 

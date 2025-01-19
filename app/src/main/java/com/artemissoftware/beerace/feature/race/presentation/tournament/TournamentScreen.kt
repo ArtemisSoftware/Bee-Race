@@ -2,6 +2,7 @@
 
 package com.artemissoftware.beerace.feature.race.presentation.tournament
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +41,7 @@ fun TournamentScreen(
     navigateToWinner: (RaceRoute.Winner) -> Unit,
     navigateToCaptcha: (String) -> Unit,
     navigateToError: (String) -> Unit,
+    navigateBack: () -> Unit,
 ) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -49,6 +51,11 @@ fun TournamentScreen(
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
             viewModel.onTriggerEvent(TournamentEvent.ResumeRace)
         }
+    }
+
+    BackHandler {
+        viewModel.onTriggerEvent(TournamentEvent.CancelRace)
+        navigateBack()
     }
 
     TournamentScreenContent(

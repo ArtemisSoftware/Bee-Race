@@ -1,5 +1,6 @@
 package com.artemissoftware.beerace.feature.race.presentation.winner
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,13 +25,20 @@ import com.artemissoftware.beerace.core.designsystem.spacing
 import com.artemissoftware.beerace.core.presentation.util.extension.toColor
 import com.artemissoftware.beerace.core.presentation.util.extension.toOrdinal
 import com.artemissoftware.beerace.core.ui.composables.icon.RacerIcon
+import com.artemissoftware.beerace.feature.race.presentation.tournament.TournamentEvent
 
 @Composable
 fun WinnerScreen(
     name: String,
     color: String,
-    navigateToRace: () -> Unit
+    navigateToRace: () -> Unit,
+    navigateToStart: () -> Unit,
 ) {
+
+    BackHandler {
+        navigateToStart()
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         content = { innerPadding ->
@@ -88,6 +96,8 @@ private  fun WinnerScreenPreview() {
         WinnerScreen(
             name = "Michael Valiant",
             color = "#8d62a1",
-            navigateToRace = {})
+            navigateToRace = {},
+            navigateToStart = {}
+        )
     }
 }
