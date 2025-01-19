@@ -1,4 +1,4 @@
-package com.artemissoftware.beerace.core.data
+package com.artemissoftware.beerace.core.data.remote
 
 import com.artemissoftware.beerace.core.data.remote.dto.CaptchaDto
 import com.artemissoftware.beerace.core.data.remote.dto.ErrorDto
