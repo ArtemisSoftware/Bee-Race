@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.artemissoftware.beerace.feature.race.domain.models.Racer
 import com.artemissoftware.beerace.core.ui.composables.icon.RacerIcon
 import com.artemissoftware.beerace.core.designsystem.BeeRaceTheme
+import com.artemissoftware.beerace.core.designsystem.Gray10
 import com.artemissoftware.beerace.core.designsystem.dimension
 import com.artemissoftware.beerace.core.designsystem.spacing
 import com.artemissoftware.beerace.core.presentation.util.extension.toColor
@@ -52,7 +53,7 @@ fun RaceCard(
             Text(
                 text = racer.name,
                 style = MaterialTheme.typography.labelLarge,
-                color = Color.Gray
+                color = Gray10
             )
         }
 
