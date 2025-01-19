@@ -25,9 +25,6 @@ class TournamentViewModel @Inject constructor(
     private val _state = MutableStateFlow(TournamentState())
     val state = _state.asStateFlow()
 
-    var isRunning = false
-        private set
-
     private var timerJob: Job? = null
     private var updateJob: Job? = null
 
@@ -103,10 +100,9 @@ class TournamentViewModel @Inject constructor(
 
 
     private fun startCountdown() = with(_state) {
-        if (isRunning) return // Prevent multiple countdowns
+        if (value.status == RaceStatus.RUNNING) return // Prevent multiple countdowns
 
         updateRaceStatus(RaceStatus.RUNNING)
-        isRunning = true
         updateRace()
         timerJob = viewModelScope.launch {
             while (value.duration.timeInSeconds > 0) {
@@ -126,7 +122,6 @@ class TournamentViewModel @Inject constructor(
         timerJob = null
         updateJob?.cancel()
         updateJob = null
-        isRunning = false
     }
 
     private fun resumeCountdown() = with(_state.value){
@@ -134,14 +129,17 @@ class TournamentViewModel @Inject constructor(
             startCountdown()
     }
 
-    private fun finishRace(){
-        isRunning = false
+    private fun finishRace() = with(_state.value){
         cancelCountdown(RaceStatus.FINISHED)
-        viewModelScope.launch {
-            val racer = _state.value.racers.first()
-            sendUiEvent(
-                UiEvent.Navigate(Route.Winner(color = racer.color, name = racer.name) )
-            )
+        if(racers.isEmpty()){
+            updateError("Unable to get racers. The race must be restarted")
+        } else {
+            viewModelScope.launch {
+                val racer = racers.first()
+                sendUiEvent(
+                    UiEvent.Navigate(Route.Winner(color = racer.color, name = racer.name))
+                )
+            }
         }
     }
 
