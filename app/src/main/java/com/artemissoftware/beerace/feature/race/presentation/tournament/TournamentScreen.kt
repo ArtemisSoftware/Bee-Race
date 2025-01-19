@@ -5,6 +5,7 @@ package com.artemissoftware.beerace.feature.race.presentation.tournament
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,11 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,6 +29,7 @@ import com.artemissoftware.beerace.core.designsystem.BeeRaceTheme
 import com.artemissoftware.beerace.core.designsystem.spacing
 import com.artemissoftware.beerace.feature.race.domain.models.Racer
 import com.artemissoftware.beerace.core.presentation.composables.events.ManageUIEvents
+import com.artemissoftware.beerace.feature.race.presentation.navigation.RaceRoute
 import com.artemissoftware.beerace.presentation.navigation.Route
 import com.artemissoftware.beerace.feature.race.presentation.tournament.composables.RaceCard
 import com.artemissoftware.beerace.feature.race.presentation.tournament.composables.RaceCountdownTimer
@@ -33,9 +37,9 @@ import com.artemissoftware.beerace.feature.race.presentation.tournament.composab
 @Composable
 fun TournamentScreen(
     viewModel: TournamentViewModel = hiltViewModel(),
-    navigateToWinner: (Route.Winner) -> Unit,
-    navigateToCaptcha: (Route.Captcha) -> Unit,
-    navigateToError: (Route.Error) -> Unit,
+    navigateToWinner: (RaceRoute.Winner) -> Unit,
+    navigateToCaptcha: (String) -> Unit,
+    navigateToError: (String) -> Unit,
 ) {
 
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -53,11 +57,16 @@ fun TournamentScreen(
 
     ManageUIEvents(
         uiEvent = viewModel.uiEvent,
-        onNavigate = {
+        onNavigateWithRoute = {
             when(it.value){
-                is Route.Winner -> navigateToWinner(it.value)
-                is Route.Captcha -> navigateToCaptcha(it.value)
-                is Route.Error -> navigateToError(it.value)
+                is RaceRoute.Winner -> navigateToWinner(it.value)
+                else -> Unit
+            }
+        },
+        onNavigate = {
+            when(it.route){
+                RaceRoute.CAPTCHA -> navigateToCaptcha(it.value as String)
+                RaceRoute.ERROR -> navigateToError(it.value as String)
                 else -> Unit
             }
         }
@@ -87,19 +96,32 @@ private fun TournamentScreenContent(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spacing0_5)
-            ) {
-                itemsIndexed(state.racers, key = { _, item -> item.name }) { index, racer ->
-                    RaceCard(
-                        position = index + 1,
-                        racer = racer,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateItem(fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(700))
+            if(state.isLoading){
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding),
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
                     )
+                }
+            }
+            else {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.spacing0_5)
+                ) {
+                    itemsIndexed(state.racers, key = { _, item -> item.name }) { index, racer ->
+                        RaceCard(
+                            position = index + 1,
+                            racer = racer,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItem(fadeInSpec = null, fadeOutSpec = null, placementSpec = tween(700))
+                        )
+                    }
                 }
             }
         }

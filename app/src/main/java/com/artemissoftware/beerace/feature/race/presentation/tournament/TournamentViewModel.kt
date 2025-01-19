@@ -2,12 +2,12 @@ package com.artemissoftware.beerace.feature.race.presentation.tournament
 
 import androidx.lifecycle.viewModelScope
 import com.artemissoftware.beerace.core.domain.error.DataError
-import com.artemissoftware.beerace.feature.race.domain.models.RaceDuration
-import com.artemissoftware.beerace.feature.race.domain.repository.RaceRepository
-import com.artemissoftware.beerace.feature.race.presentation.tournament.model.RaceStatus
 import com.artemissoftware.beerace.core.presentation.util.events.UiEvent
 import com.artemissoftware.beerace.core.presentation.util.events.UiEventViewModel
-import com.artemissoftware.beerace.presentation.navigation.Route
+import com.artemissoftware.beerace.feature.race.domain.models.RaceDuration
+import com.artemissoftware.beerace.feature.race.domain.repository.RaceRepository
+import com.artemissoftware.beerace.feature.race.presentation.navigation.RaceRoute
+import com.artemissoftware.beerace.feature.race.presentation.tournament.model.RaceStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -59,10 +59,11 @@ class TournamentViewModel @Inject constructor(
                     update {
                         it.copy(isLoading = false)
                     }
+
                     when(error){
-                        is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url)
+                        is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url, RaceStatus.MUST_RESTART_RACE)
                         is DataError.NetworkError.Error -> updateError(error.message)
-                        else -> updateError("THe error I did not take care of")
+                        else -> updateError("THe error I did not take care of")// TODO
                     }
                 }
         }
@@ -85,7 +86,7 @@ class TournamentViewModel @Inject constructor(
                         when(error){
                             is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url)
                             is DataError.NetworkError.Error -> updateError(error.message)
-                            else -> updateError("THe error I did not take care of")
+                            else -> updateError("THe error I did not take care of") // TODO
                         }
                     }
             }
@@ -125,19 +126,23 @@ class TournamentViewModel @Inject constructor(
     }
 
     private fun resumeCountdown() = with(_state.value){
-        if(status == RaceStatus.PAUSED)
-            startCountdown()
+        when(status) {
+            RaceStatus.PAUSED -> startCountdown()
+            RaceStatus.INTERRUPTED -> startRace()
+            RaceStatus.MUST_RESTART_RACE -> startRace()
+            else -> Unit
+        }
     }
 
     private fun finishRace() = with(_state.value){
         cancelCountdown(RaceStatus.FINISHED)
         if(racers.isEmpty()){
-            updateError("Unable to get racers. The race must be restarted")
+            updateRace()
         } else {
             viewModelScope.launch {
                 val racer = racers.first()
                 sendUiEvent(
-                    UiEvent.Navigate(Route.Winner(color = racer.color, name = racer.name))
+                    UiEvent.NavigateWithRoute(RaceRoute.Winner(color = racer.color, name = racer.name))
                 )
             }
         }
@@ -147,14 +152,14 @@ class TournamentViewModel @Inject constructor(
     private fun updateError(message: String) {
         cancelCountdown(RaceStatus.INTERRUPTED)
         viewModelScope.launch {
-            sendUiEvent(UiEvent.Navigate(Route.Error(message)))
+            sendUiEvent(UiEvent.Navigate(message, RaceRoute.ERROR))
         }
     }
 
-    private fun openCaptcha(url: String) {
-        cancelCountdown(RaceStatus.PAUSED)
+    private fun openCaptcha(url: String, raceStatus: RaceStatus = RaceStatus.PAUSED) {
+        cancelCountdown(raceStatus)
         viewModelScope.launch {
-            sendUiEvent(UiEvent.Navigate(Route.Captcha(url)))
+            sendUiEvent(UiEvent.Navigate(url, RaceRoute.CAPTCHA))
         }
     }
 

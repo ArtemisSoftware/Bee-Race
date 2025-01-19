@@ -5,5 +5,6 @@ enum class RaceStatus {
     PAUSED,
     NOT_STARTED,
     FINISHED,
-    INTERRUPTED
+    INTERRUPTED,
+    MUST_RESTART_RACE,
 }
