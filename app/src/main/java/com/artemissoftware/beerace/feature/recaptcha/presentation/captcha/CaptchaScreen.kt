@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.beerace.feature.recaptcha.presentation.util.CaptchaConstants.URL_VERIFY_CAPTCHA_SUCCESS
 import com.artemissoftware.beerace.feature.recaptcha.presentation.webclient.CaptchaWebClient
 import kotlinx.coroutines.CoroutineScope
@@ -28,11 +31,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun CaptchaScreen(
     url: String,
-    onCaptchaSolved: () -> Unit
+    onCaptchaSolved: () -> Unit,
+    viewModel: CaptchaViewModel = hiltViewModel()
 ) {
 
+    val state = viewModel.state.collectAsState().value
     val context = LocalContext.current
     val coroutine = rememberCoroutineScope()
+
+    LaunchedEffect(state) {
+        if (state) {
+            onCaptchaSolved()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize()
@@ -54,9 +65,10 @@ fun CaptchaScreen(
 
                         webViewClient = CaptchaWebClient(
                             onCaptchaSolved = {
-                                coroutine.launch {
-                                    onCaptchaSolved()
-                                }
+                                viewModel.onTriggerEvent(CaptchaEvent.CaptchaSolved)
+//                                coroutine.launch {
+//                                    onCaptchaSolved()
+//                                }
                             }
                         )
                     }
