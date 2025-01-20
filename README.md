@@ -2,7 +2,7 @@
 
 ## 📌 Overview
 
-Bee Race is a Kotlin-based Android app built using Jetpack Compose. It fetches real-time race updates from an API, displays the position of bees in a race, and handles CAPTCHA challenges when required.
+Bee Race fetches real-time race updates from an API, displays the position of bees in a race, and handles CAPTCHA challenges when required.
 
 ## 🛠️ Tech Stack
 
