@@ -44,9 +44,9 @@ fun NavGraphBuilder.raceNavGraph(
         WinnerScreen(
             color = route.color,
             name = route.name,
-            navigateToRace = { navController.navigate(RaceRoute.Tournament) },
+            navigateToRace = { navController.popBackStack() },
             navigateToStart = {
-                navController.popBackStack(RaceRoute.StartRace, inclusive = false)
+                navController.popBackStack(RaceRoute.StartRace, inclusive = false )
             }
         )
     }

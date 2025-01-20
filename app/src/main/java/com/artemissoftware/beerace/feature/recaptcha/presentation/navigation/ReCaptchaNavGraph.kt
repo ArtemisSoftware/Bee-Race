@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.artemissoftware.beerace.feature.race.presentation.navigation.RaceRoute
 import com.artemissoftware.beerace.feature.recaptcha.presentation.captcha.CaptchaScreen
 
 fun NavGraphBuilder.reCaptchaNavGraph(navController: NavHostController) {
@@ -13,6 +14,7 @@ fun NavGraphBuilder.reCaptchaNavGraph(navController: NavHostController) {
 
         CaptchaScreen(
             url = route.url,
+            onAbandonCaptcha = { navController.popBackStack(RaceRoute.StartRace, inclusive = false) },
             onCaptchaSolved = { navController.popBackStack() },
         )
     }

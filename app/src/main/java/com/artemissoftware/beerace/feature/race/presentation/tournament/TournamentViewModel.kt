@@ -126,6 +126,7 @@ class TournamentViewModel @Inject constructor(
             RaceStatus.PAUSED -> startCountdown()
             RaceStatus.INTERRUPTED -> startRace()
             RaceStatus.MUST_RESTART_RACE -> startRace()
+            RaceStatus.FINISHED -> startRace()
             else -> Unit
         }
     }
@@ -161,6 +162,11 @@ class TournamentViewModel @Inject constructor(
 
     private fun updateRaceStatus(raceStatus: RaceStatus) = with(_state){
         update { it.copy(status = raceStatus) }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelCountdown(status = RaceStatus.FINISHED)
     }
 
     private companion object{

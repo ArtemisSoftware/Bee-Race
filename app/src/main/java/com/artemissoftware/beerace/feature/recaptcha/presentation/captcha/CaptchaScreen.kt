@@ -2,6 +2,7 @@ package com.artemissoftware.beerace.feature.recaptcha.presentation.captcha
 
 import android.annotation.SuppressLint
 import android.webkit.WebView
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,8 +23,13 @@ import com.artemissoftware.beerace.feature.recaptcha.presentation.webclient.Capt
 fun CaptchaScreen(
     url: String,
     onCaptchaSolved: () -> Unit,
+    onAbandonCaptcha: () -> Unit,
     viewModel: CaptchaViewModel = hiltViewModel()
 ) {
+
+    BackHandler {
+        onAbandonCaptcha()
+    }
 
     val state = viewModel.state.collectAsState().value
     val context = LocalContext.current
