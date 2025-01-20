@@ -2,6 +2,7 @@ package com.artemissoftware.beerace.testdata
 
 import com.artemissoftware.beerace.core.domain.Resource
 import com.artemissoftware.beerace.core.domain.error.DataError
+import com.artemissoftware.beerace.core.domain.models.Captcha
 import com.artemissoftware.beerace.feature.race.data.network.dto.BeeDto
 import com.artemissoftware.beerace.feature.race.domain.models.RaceDuration
 import com.artemissoftware.beerace.feature.race.domain.models.RaceOverview
@@ -24,6 +25,6 @@ object TestData {
         updateDelay = updateDelay
     )
 
-    private val errorCaptcha = DataError.NetworkError.CaptchaControl("https://captcha.url")
+    private val errorCaptcha = DataError.NetworkError.CaptchaControl(Captcha("https://captcha.url"))
     val resourceErrorCaptcha = Resource.Failure<RaceOverview>(errorCaptcha)
 }

@@ -4,6 +4,7 @@ import com.artemissoftware.beerace.core.data.remote.dto.CaptchaDto
 import com.artemissoftware.beerace.core.data.remote.dto.ErrorDto
 import com.artemissoftware.beerace.core.domain.Resource
 import com.artemissoftware.beerace.core.domain.error.DataError
+import com.artemissoftware.beerace.feature.race.data.mapper.toCaptcha
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import java.net.ConnectException
@@ -56,10 +57,10 @@ internal object HandleNetwork {
 
                 val error = when {
                     errorBody.contains("error") -> DataError.NetworkError.Error(
-                        (adapter.fromJson(errorBody)!!).error.message
+                        message = (adapter.fromJson(errorBody)!!).error.message
                     )
                     errorBody.contains("captchaUrl") -> DataError.NetworkError.CaptchaControl(
-                        (adapterCaptcha.fromJson(errorBody)!!).captchaUrl
+                        captcha = (adapterCaptcha.fromJson(errorBody)!!).toCaptcha()
                     )
                     else -> DataError.NetworkError.Unknown
                 }

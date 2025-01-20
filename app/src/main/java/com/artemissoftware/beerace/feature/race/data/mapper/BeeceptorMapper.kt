@@ -3,7 +3,7 @@ package com.artemissoftware.beerace.feature.race.data.mapper
 import com.artemissoftware.beerace.feature.race.data.network.dto.BeeDto
 import com.artemissoftware.beerace.core.data.remote.dto.CaptchaDto
 import com.artemissoftware.beerace.feature.race.data.network.dto.DurationDto
-import com.artemissoftware.beerace.domain.models.Captcha
+import com.artemissoftware.beerace.core.domain.models.Captcha
 import com.artemissoftware.beerace.feature.race.domain.models.RaceDuration
 import com.artemissoftware.beerace.feature.race.domain.models.Racer
 

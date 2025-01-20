@@ -50,6 +50,8 @@ fun CaptchaScreen(
                         settings.javaScriptEnabled = true
                         settings.domStorageEnabled = true
 
+                        loadUrl(url)
+
                         webViewClient = CaptchaWebClient(
                             onCaptchaSolved = {
                                 coroutine.launch {
@@ -57,8 +59,6 @@ fun CaptchaScreen(
                                 }
                             }
                         )
-
-                        loadUrl(url)
                     }
                 }
             )

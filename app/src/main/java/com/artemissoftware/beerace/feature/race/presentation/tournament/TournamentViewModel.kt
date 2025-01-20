@@ -64,7 +64,7 @@ class TournamentViewModel @Inject constructor(
                     }
 
                     when(error){
-                        is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url, RaceStatus.MUST_RESTART_RACE)
+                        is DataError.NetworkError.CaptchaControl -> openCaptcha(error.captcha.url, RaceStatus.MUST_RESTART_RACE)
                         is DataError.NetworkError.Error -> sendError(UiText.DynamicString(error.message))
                         else -> sendError(error. toUiText())
                     }
@@ -87,7 +87,7 @@ class TournamentViewModel @Inject constructor(
                     .onFailure { error ->
 
                         when(error){
-                            is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url)
+                            is DataError.NetworkError.CaptchaControl -> openCaptcha(error.captcha.url)
                             is DataError.NetworkError.Error -> sendError(UiText.DynamicString(error.message))
                             else -> sendError(error. toUiText())
                         }
