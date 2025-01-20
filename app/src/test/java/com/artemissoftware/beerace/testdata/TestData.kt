@@ -11,6 +11,7 @@ import com.artemissoftware.beerace.testdata.DtoTestData.timeInSeconds
 object TestData {
 
     val raceDuration = RaceDuration(timeInSeconds = timeInSeconds)
+    val updateDelay = 4000L
 
     val racer1 = Racer(color = "Yellow", name = "Buzzy")
     val racer2 = Racer(color = "Black", name = "Shadow")
@@ -19,7 +20,8 @@ object TestData {
 
     val raceOverview = RaceOverview(
         raceDuration = raceDuration,
-        racers = racers
+        racers = racers,
+        updateDelay = updateDelay
     )
 
     private val errorCaptcha = DataError.NetworkError.CaptchaControl("https://captcha.url")

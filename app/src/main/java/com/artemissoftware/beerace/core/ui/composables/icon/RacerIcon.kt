@@ -35,6 +35,7 @@ fun RacerIcon(
         contentAlignment = Alignment.Center
     ) {
         Image(
+            modifier = Modifier.size(MaterialTheme.dimension.iconSizeSmall),
             painter = painterResource(id = icon),
             contentDescription = "Racer Icon"
         )

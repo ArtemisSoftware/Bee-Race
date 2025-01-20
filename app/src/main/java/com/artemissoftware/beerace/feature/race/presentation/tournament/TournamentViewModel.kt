@@ -50,7 +50,7 @@ class TournamentViewModel @Inject constructor(
                         it.copy(
                             racers = overview.racers,
                             duration = RaceDuration(overview.raceDuration.timeInSeconds),
-                            updateDelay = getUpdateDelay(overview.raceDuration.timeInSeconds),
+                            updateDelay = overview.updateDelay,
                             isLoading = false
                         )
                     }
@@ -63,8 +63,8 @@ class TournamentViewModel @Inject constructor(
 
                     when(error){
                         is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url, RaceStatus.MUST_RESTART_RACE)
-                        is DataError.NetworkError.Error -> updateError(error.message)
-                        else -> updateError("THe error I did not take care of")// TODO
+                        is DataError.NetworkError.Error -> sendError(error.message)
+                        else -> sendError("THe error I did not take care of")// TODO
                     }
                 }
         }
@@ -86,18 +86,12 @@ class TournamentViewModel @Inject constructor(
 
                         when(error){
                             is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url)
-                            is DataError.NetworkError.Error -> updateError(error.message)
-                            else -> updateError("THe error I did not take care of") // TODO
+                            is DataError.NetworkError.Error -> sendError(error.message)
+                            else -> sendError("THe error I did not take care of") // TODO
                         }
                     }
             }
         }
-    }
-
-    private fun getUpdateDelay(timeInSeconds: Int): Long {
-        val allowedCalls = (timeInSeconds * 0.5).toInt().coerceAtMost(30)
-        val delay = if (allowedCalls > 0) timeInSeconds * 1000L / allowedCalls else 0L
-        return delay
     }
 
     private fun startCountdown() = with(_state) {
@@ -149,7 +143,7 @@ class TournamentViewModel @Inject constructor(
     }
 
 
-    private fun updateError(message: String) {
+    private fun sendError(message: String) {
         cancelCountdown(RaceStatus.INTERRUPTED)
         viewModelScope.launch {
             sendUiEvent(UiEvent.Navigate(message, RaceRoute.ERROR))

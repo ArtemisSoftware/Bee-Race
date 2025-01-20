@@ -29,6 +29,7 @@ class RaceRepositoryImpl(
                 resultDuration is Resource.Success && resultStatus is Resource.Success ->{
                     Resource.Success(
                         RaceOverview(
+                            updateDelay = getUpdateDelay(resultDuration.data.timeInSeconds),
                             raceDuration = resultDuration.data,
                             racers = resultStatus.data
                         )
@@ -57,5 +58,11 @@ class RaceRepositoryImpl(
         return HandleNetwork.safeNetworkCall {
             beeceptorApiSource.getRaceStatus().bees.map{ it.toRacer() }
         }
+    }
+
+    private fun getUpdateDelay(timeInSeconds: Int): Long {
+        val allowedCalls = (timeInSeconds * 0.5).toInt().coerceAtMost(30)
+        val delay = if (allowedCalls > 0) timeInSeconds * 1000L / allowedCalls else 0L
+        return delay
     }
 }
