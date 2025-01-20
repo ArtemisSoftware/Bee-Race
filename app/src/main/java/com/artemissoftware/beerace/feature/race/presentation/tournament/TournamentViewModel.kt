@@ -100,7 +100,6 @@ class TournamentViewModel @Inject constructor(
         return delay
     }
 
-
     private fun startCountdown() = with(_state) {
         if (value.status == RaceStatus.RUNNING) return // Prevent multiple countdowns
 
@@ -168,9 +167,7 @@ class TournamentViewModel @Inject constructor(
         update { it.copy(status = raceStatus) }
     }
 
-
     private companion object{
         const val UPDATE_DELAY = 1000L
     }
-
 }
