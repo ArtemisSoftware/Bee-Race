@@ -2,8 +2,10 @@ package com.artemissoftware.beerace.feature.race.presentation.tournament
 
 import androidx.lifecycle.viewModelScope
 import com.artemissoftware.beerace.core.domain.error.DataError
+import com.artemissoftware.beerace.core.presentation.util.UiText
 import com.artemissoftware.beerace.core.presentation.util.events.UiEvent
 import com.artemissoftware.beerace.core.presentation.util.events.UiEventViewModel
+import com.artemissoftware.beerace.core.presentation.util.extension.toUiText
 import com.artemissoftware.beerace.feature.race.domain.models.RaceDuration
 import com.artemissoftware.beerace.feature.race.domain.repository.RaceRepository
 import com.artemissoftware.beerace.feature.race.presentation.navigation.RaceRoute
@@ -63,8 +65,8 @@ class TournamentViewModel @Inject constructor(
 
                     when(error){
                         is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url, RaceStatus.MUST_RESTART_RACE)
-                        is DataError.NetworkError.Error -> sendError(error.message)
-                        else -> sendError("THe error I did not take care of")// TODO
+                        is DataError.NetworkError.Error -> sendError(UiText.DynamicString(error.message))
+                        else -> sendError(error. toUiText())
                     }
                 }
         }
@@ -86,8 +88,8 @@ class TournamentViewModel @Inject constructor(
 
                         when(error){
                             is DataError.NetworkError.CaptchaControl -> openCaptcha(error.url)
-                            is DataError.NetworkError.Error -> sendError(error.message)
-                            else -> sendError("THe error I did not take care of") // TODO
+                            is DataError.NetworkError.Error -> sendError(UiText.DynamicString(error.message))
+                            else -> sendError(error. toUiText())
                         }
                     }
             }
@@ -143,7 +145,7 @@ class TournamentViewModel @Inject constructor(
     }
 
 
-    private fun sendError(message: String) {
+    private fun sendError(message: UiText) {
         cancelCountdown(RaceStatus.INTERRUPTED)
         viewModelScope.launch {
             sendUiEvent(UiEvent.Navigate(message, RaceRoute.ERROR))

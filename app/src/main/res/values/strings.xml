@@ -9,4 +9,11 @@
     <string name="re_start_bee_race">re-Start Bee Race</string>
     <string name="retry">Retry</string>
     <string name="time_remaining">Time remaining</string>
+    <string name="connection_error">Connection error</string>
+    <string name="connection_socket_time_out">Socket timeout</string>
+    <string name="unknown_error">An error occurred</string>
+    <string name="unknown_host_error">Unknown host error</string>
+    <string name="error_not_mapped">Error not mapped</string>
+    <string name="oops">Oops !!</string>
+    <string name="don_t_worry_we_are_on_it">Don\'t worry we are on it</string>
 </resources>

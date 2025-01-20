@@ -61,7 +61,7 @@ class RaceRepositoryImpl(
     }
 
     private fun getUpdateDelay(timeInSeconds: Int): Long {
-        val allowedCalls = (timeInSeconds * 0.5).toInt().coerceAtMost(30)
+        val allowedCalls = (timeInSeconds * 1.2).toInt().coerceAtMost(30)
         val delay = if (allowedCalls > 0) timeInSeconds * 1000L / allowedCalls else 0L
         return delay
     }

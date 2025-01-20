@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -30,10 +31,12 @@ import com.artemissoftware.beerace.core.designsystem.BeeRaceTheme
 import com.artemissoftware.beerace.core.designsystem.spacing
 import com.artemissoftware.beerace.feature.race.domain.models.Racer
 import com.artemissoftware.beerace.core.presentation.composables.events.ManageUIEvents
+import com.artemissoftware.beerace.core.presentation.util.UiText
 import com.artemissoftware.beerace.feature.race.presentation.navigation.RaceRoute
 import com.artemissoftware.beerace.presentation.navigation.Route
 import com.artemissoftware.beerace.feature.race.presentation.tournament.composables.RaceCard
 import com.artemissoftware.beerace.feature.race.presentation.tournament.composables.RaceCountdownTimer
+import kotlinx.coroutines.delay
 
 @Composable
 fun TournamentScreen(
@@ -44,6 +47,7 @@ fun TournamentScreen(
     navigateBack: () -> Unit,
 ) {
 
+    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
 
@@ -73,7 +77,7 @@ fun TournamentScreen(
         onNavigate = {
             when(it.route){
                 RaceRoute.CAPTCHA -> navigateToCaptcha(it.value as String)
-                RaceRoute.ERROR -> navigateToError(it.value as String)
+                RaceRoute.ERROR -> navigateToError((it.value as UiText).asString(context))
                 else -> Unit
             }
         }
@@ -87,8 +91,8 @@ private fun TournamentScreenContent(
     val listState = rememberLazyListState()
 
     LaunchedEffect(state.racers) {
-//        delay(1000)
-//        listState.animateScrollToItem(0)
+        delay(1500)
+        listState.animateScrollToItem(0)
     }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
