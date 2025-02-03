@@ -1,4 +1,6 @@
-# Bee Race - Real-time Bee Racing App
+# Bee Race
+
+Real-time Bee Racing App
 
 ## 📌 Overview
 
@@ -24,7 +26,7 @@ Bee Race fetches real-time race updates from an API, displays the position of be
 
 
 ## Screenshots
-| Home Screen | Race in Progress | CAPTCHA Screen | Error Screen |
+| Home Screen | Race in Progress | Error Screen | CAPTCHA Screen |
 |------------|----------------|---------------|-------------|
 <img src="images/BeeRace_1.jpg">    |  <img src="images/BeeRace_2.jpg">  |  <img src="images/BeeRace_3.jpg">    |  <img src="images/BeeRace_4.jpg">     |  
 
